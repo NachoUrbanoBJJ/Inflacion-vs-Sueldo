@@ -4,6 +4,8 @@ Calculá tu **aumento real** — no el de papel. Elegís el mes de tu último au
 
 Proyecto 100% frontend, sin frameworks, con datos reales del INDEC vía la API de Datos Argentina.
 
+**Demo en vivo:** [ticket-inflacion.vercel.app](https://ticket-inflacion.vercel.app/)
+
 ## Screenshots
 
 Versión desktop (nota lateral con inflación histórica + índice de alquileres, segundo trabajo, historial):
@@ -83,10 +85,6 @@ app.js          → cálculo, API INDEC, historial/CSV, render de notas
 estilos.css     → diseño de ticket, layout 3 columnas, responsive, print
 screenshots/    → capturas para este README
 ```
-
-## Deploy
-
-Es una app estática: arrastrá la carpeta a Vercel (o cualquier host estático) y queda lista. La API de Datos Argentina no requiere clave.
 
 ## Nota
 
