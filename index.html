@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Le ganaste a la inflación?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Archivo+Black&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<div class="layout">
+
+  <div class="nota-movil-wrap">
+    <button class="nota-movil-btn" id="notaBtn" type="button" onclick="toggleNotaMovil()" aria-expanded="false" aria-controls="notaInflacion">
+      <span class="nf-lead">Inflación histórica y alquileres</span>
+      <span class="nf-arrow" id="notaArrow">▾</span>
+    </button>
+
+  <aside class="note-pin" id="notaInflacion">
+    <div class="note-tag">Inflación histórica e índice de alquileres bs as</div>
+    <div class="status" id="fuenteStatus">Cargando datos del INDEC…</div>
+
+    <div class="quick-acc" id="quickAcc"></div>
+
+    <div class="anio-row">
+      <label for="anioSel">Año:</label>
+      <select id="anioSel"></select>
+    </div>
+
+    <div class="ipc-resumen">
+      <div class="row"><span>Acumulado <span class="tiny">(<span id="ipcAnioLabel">—</span>)</span></span><span class="v" id="ipcAcum">—</span></div>
+      <div class="row"><span>Promedio mensual</span><span class="v" id="ipcProm">—</span></div>
+    </div>
+
+    <ul class="hist-list" id="ipcList"></ul>
+    <div class="hist-empty" id="ipcEmpty">Sin datos para ese año.</div>
+
+    <div class="dat-block" id="alqNote">
+      <div class="dat-title">Índice de alquileres · vivienda (GBA/AMBA)</div>
+      <div class="row"><span>Último mes</span><span class="v" id="alqUltimo">—</span></div>
+      <div class="row"><span>Últimos 3M</span><span class="v" id="alq3">—</span></div>
+      <div class="row"><span>Últimos 6M</span><span class="v" id="alq6">—</span></div>
+      <div class="row"><span>Últimos 12M</span><span class="v" id="alq12">—</span></div>
+      <div class="status" id="alqMeta">Cargando datos de alquileres…</div>
+      <div class="hint">El alquiler suele correr por arriba del IPC general: muchos ajustes se indexan a la inflación + un plus. Fuente: INDEC · IPC-GBA base dic 2016 (Datos Argentina).</div>
+    </div>
+  </aside>
+  </div>
+
+  <div class="receipt">
+  <header>
+    <div class="eyebrow">TICKET N° 001</div>
+    <h1>¿Le ganaste<br>a la inflación?</h1>
+    <div class="sub">calculá tu aumento real, no el de papel</div>
+  </header>
+
+  <div class="note-card">
+    <b>Nota</b>
+    El INDEC publica el IPC de un mes recién a mediados del mes siguiente. El dato más reciente puede estar diferido, así que la comparación de este ticket es siempre contra la última inflación publicada, no la del mes en curso.
+  </div>
+
+  <section class="block">
+    <div class="block-title"><span>1</span>Valor hora → sueldo total</div>
+    <div class="block-desc">Cargá cuánto vale tu hora y cuántas horas trabajás cada día. Así evitás cargar un bruto mal calculado o confundirte con las horas extra.</div>
+
+    <div class="field">
+      <label for="valorHora">Valor de tu hora ($)</label>
+      <input type="number" id="valorHora" placeholder="3500" inputmode="decimal">
+    </div>
+
+    <div class="week-grid" id="weekGrid"></div>
+
+    <div class="segmented" id="periodoToggle">
+      <button data-p="semanal">Semanal</button>
+      <button data-p="quincenal">Quincenal</button>
+      <button data-p="mensual" class="active">Mensual</button>
+    </div>
+
+    <div class="field" id="mesHoraField">
+      <label for="mesHora">Mes a calcular</label>
+      <input type="month" id="mesHora">
+    </div>
+
+    <div class="field quincena-select" id="quincenaField">
+      <label for="quincenaNum">Quincena</label>
+      <select id="quincenaNum">
+        <option value="1">Del 1 al 15</option>
+        <option value="2">Del 16 al fin de mes</option>
+      </select>
+    </div>
+
+    <button id="horaBtn" onclick="calcularValorHora()">Calcular sueldo</button>
+    <div class="status" id="statusHora"></div>
+
+    <div class="valor-hora-out" id="valorHoraOut">
+      <div class="num" id="vhValor">—</div>
+      <div class="lab">sueldo total del período</div>
+      <div class="row" style="margin-top:14px;">
+        <span>Horas trabajadas</span>
+        <span class="v" id="vhHoras">—</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn-secondary" onclick="usarComo('viejo')">Usar como sueldo anterior</button>
+        <button class="btn-secondary" onclick="usarComo('nuevo')">Usar como sueldo nuevo</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span>2</span>Aumento vs. inflación</div>
+    <div class="block-desc">Si ya sabés tus totales de memoria, cargalos directo acá.</div>
+
+    <div class="field">
+      <label for="viejo">Sueldo anterior ($)</label>
+      <input type="number" id="viejo" placeholder="500000" inputmode="decimal">
+    </div>
+
+    <div class="field">
+      <label for="nuevo">Sueldo nuevo ($)</label>
+      <input type="number" id="nuevo" placeholder="620000" inputmode="decimal">
+    </div>
+
+    <div class="field">
+      <label for="mes">Último aumento (mes)</label>
+      <input type="month" id="mes">
+    </div>
+
+    <div class="hint strong-hint">Lo ideal en este caso sería que el cálculo se realice sobre el último período de aumento. Ej: si tu último aumento fue en febrero, calculá el valor total anterior a febrero, el valor total actual, y la inflación del período de febrero hasta el último mes publicado. Así vas a ver la diferencia real de lo que le venís ganando o perdiendo desde tu último aumento.</div>
+
+    <details class="escalon-details" id="escalonBox">
+      <summary><span class="tiny">Extra:</span> Aumento en escalones (opcional)</summary>
+      <div class="block-desc">¿Tu paritaria se paga en tramos? Cargá cada mes con su % y usarlo para completar tu sueldo nuevo.</div>
+      <div id="escalonRows"></div>
+      <button class="btn-secondary" type="button" onclick="agregarEscalon()">+ Agregar tramo</button>
+      <div class="escalon-res" id="escalonRes"></div>
+      <button class="btn-secondary" type="button" onclick="usarEscalones()">Usar como sueldo nuevo</button>
+    </details>
+
+    <div class="seg-trabajo" id="segTrabajoWrap">
+      <button class="btn-mini" id="toggle2do" type="button" onclick="toggleSegundoTrabajo()">+ Agregar segundo trabajo</button>
+      <div class="seg-trabajo-fields" id="segTrabajo" style="display:none;">
+        <div class="field">
+          <label for="viejo2">Sueldo anterior (2º trabajo, $)</label>
+          <input type="number" id="viejo2" placeholder="400000" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="nuevo2">Sueldo nuevo (2º trabajo, $)</label>
+          <input type="number" id="nuevo2" placeholder="480000" inputmode="decimal">
+        </div>
+        <div class="hint">El 2º trabajo se compara contra la misma ventana que el principal. Podés cerrarlo o borrarlo si ya no lo tenés: mirá siempre el resultado de tu trabajo principal.</div>
+      </div>
+    </div>
+
+    <button id="calcBtn" onclick="calcular()">Calcular</button>
+    <div class="status" id="status"></div>
+
+    <div class="result" id="result">
+      <div class="row"><span>Tu aumento nominal</span><span class="v" id="rAumento">—</span></div>
+      <div class="row"><span id="rInflacionLab">Inflación acumulada</span><span class="v" id="rInflacion">—</span></div>
+      <div class="row total"><span>Diferencia real <span class="tiny">(poder de compra)</span></span><span class="v" id="rDiff">—</span></div>
+
+      <div class="result-sep" id="rSep2" style="display:none;">
+        <div class="row sub-head"><span>Trabajo principal</span><span></span></div>
+        <div class="row"><span>Aumento nominal (principal)</span><span class="v" id="rAumento2">—</span></div>
+        <div class="row"><span>Diferencia real (principal)</span><span class="v" id="rDiff2">—</span></div>
+        <div class="row sub-head"><span>Ambos trabajos</span><span></span></div>
+        <div class="row"><span>Suma de sueldos</span><span class="v" id="rTotSueldos">—</span></div>
+        <div class="row"><span>Aumento nominal (total)</span><span class="v" id="rAumentoT">—</span></div>
+        <div class="row total"><span>Diferencia real (total)</span><span class="v" id="rDiffT">—</span></div>
+        <div class="note-pin enfasis">
+          <b>Nota</b>
+          La decisión la toma tu trabajo principal: si tu sueldo principal le viene ganando a la inflación pero el total (sumando el 2º) dio negativo, es por el 2º trabajo. Mirá si vale la pena negociarlo o soltarlo.
+        </div>
+      </div>
+
+    <div class="stamp-wrap">
+        <div class="stamp" id="stamp"></div>
+      </div>
+
+      <div class="chart">
+        <div class="chart-title" id="chartTitle">Inflación acumulada</div>
+        <div class="bars" id="bars"></div>
+        <div class="bar-labels" id="barLabels"></div>
+      </div>
+
+      <div class="guardar-wrap" id="guardarWrap">
+        <div class="btn-row" style="margin-top:0;">
+          <button class="btn-secondary" onclick="guardarCalculo()">Guardar en mi historial</button>
+          <button class="btn-secondary" onclick="descargarTicket()">Descargar ticket (PNG)</button>
+        </div>
+        <div class="status" id="statusGuardar"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="block-title"><span>3</span>Historial del año</div>
+    <div class="block-desc">Cada vez que guardás un cálculo queda acá. Así ves si en el año venís ganando o perdiendo, aunque algún mes puntual te haya dado bien.</div>
+
+    <div class="btn-row" style="margin-top:0;">
+      <button class="btn-secondary" onclick="exportarHistorial()">Exportar historial (CSV)</button>
+    </div>
+    <div class="status" id="statusExport"></div>
+
+    <div class="historial-agg" id="historialAgg" style="display:none;">
+      <div class="item"><div class="n" id="aggGanados">—</div><div class="l">meses ganados</div></div>
+      <div class="item"><div class="n" id="aggPerdidos">—</div><div class="l">meses perdidos</div></div>
+      <div class="item"><div class="n" id="aggPromedio">—</div><div class="l">promedio real</div></div>
+    </div>
+
+    <ul class="hist-list" id="histList"></ul>
+    <div class="hist-empty" id="histEmpty">Todavía no guardaste ningún cálculo.</div>
+  </section>
+
+  <div class="barcode" id="barcode"></div>
+  <div class="footer" id="pieFooter">FUENTE: INDEC · cargando datos…</div>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
