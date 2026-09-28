@@ -6,20 +6,6 @@ Proyecto 100% frontend, sin frameworks, con datos reales del INDEC vía la API d
 
 **Demo en vivo:** [ticket-inflacion.vercel.app](https://ticket-inflacion.vercel.app/) · [![Tests](https://github.com/NachoUrbanoBJJ/Inflacion-vs-Sueldo/actions/workflows/ci.yml/badge.svg)](https://github.com/NachoUrbanoBJJ/Inflacion-vs-Sueldo/actions/workflows/ci.yml)
 
-## Screenshots
-
-Versión desktop (nota lateral con inflación histórica + índice de alquileres, segundo trabajo, historial):
-
-![Desktop](screenshots/app-desktop.png)
-
-Versión mobile (ticket primero, datos desplegables en acordeón):
-
-![Mobile](screenshots/app-mobile.png)
-
-El ticket descargable en PNG:
-
-![Ticket PNG](screenshots/ticket-desktop.png)
-
 ## El problema
 
 En Argentina los aumentos de salario se negocian contra una inflación que casi siempre va por arriba. Un aumento **nominal** de 8% frente a un IPC del 12% no es un aumento: es una pérdida de poder de compra. Esta app traduce el "porcentaje de papel" al resultado real, y lo presenta como un ticket de compra: o le ganaste a la inflación, o perdiste.
@@ -102,3 +88,17 @@ tests/          → suites de test (unit/CSV + E2E con Playwright)
 ## Nota
 
 Los datos del IPC que publica el INDEC llegan con un desfasaje de ~la mitad del mes siguiente; el ticket siempre compara contra el **último mes publicado**, no contra el mes en curso.
+
+## Screenshots
+
+Versión desktop (nota lateral con inflación histórica + índice de alquileres, segundo trabajo, historial):
+
+![Desktop](screenshots/app-desktop.png)
+
+Versión mobile (ticket primero, datos desplegables en acordeón):
+
+![Mobile](screenshots/app-mobile.png)
+
+El ticket descargable en PNG:
+
+![Ticket PNG](screenshots/ticket-desktop.png)
