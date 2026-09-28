@@ -61,8 +61,8 @@ La primera vez, o si no hay conexión, usa una copia local incrustada de la seri
 | Lenguajes | HTML, CSS, JavaScript (vanilla, sin frameworks ni build) |
 | PNG | html2canvas |
 | Persistencia | localStorage |
-| Test unit / CSV | Node.js (38 asserts) |
-| Test de navegador | Playwright + Edge (64 asserts, desktop y mobile) |
+| Test unit / CSV | tests/csv.test.js · Node.js (38 asserts) |
+| Test de navegador | tests/browser.test.js · Playwright + Edge/Chrome (64 asserts, desktop y mobile) |
 | Estética | Tipografías Space Mono + Archivo Black (Google Fonts) |
 
 ## Correrlo en local
@@ -77,6 +77,17 @@ npx serve .
 
 Sin dependencias, sin build, sin backend.
 
+## Tests
+
+```
+cd tests
+npm install   # una vez
+npm test      # 38 asserts unit/CSV + 64 asserts E2E (navegador real Edge o Chrome)
+```
+
+- `csv.test.js` — pipeline `calcular → guardar → exportar`: formato es-AR (coma decimal, `;`, BOM, CRLF), 11 columnas, entradas corruptas/legacy, zona horaria local y segundo trabajo.
+- `browser.test.js` — E2E sobre el `index.html` real: cálculos, persistencia, nota de datos (inflación + alquileres), 2º trabajo, export descargable, y mobile (acordeón y orden ticket→nota).
+
 ## Estructura
 
 ```
@@ -84,6 +95,7 @@ index.html      → markup y datos incrustados de respaldo
 app.js          → cálculo, API INDEC, historial/CSV, render de notas
 estilos.css     → diseño de ticket, layout 3 columnas, responsive, print
 screenshots/    → capturas para este README
+tests/          → suites de test (unit/CSV + E2E con Playwright)
 ```
 
 ## Nota
