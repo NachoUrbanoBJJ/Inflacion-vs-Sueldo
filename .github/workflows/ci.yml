@@ -1,0 +1,35 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: tests/package-lock.json
+
+      - name: Instalar dependencias de tests
+        working-directory: tests
+        run: npm ci
+
+      - name: Instalar Google Chrome (para los tests E2E)
+        run: |
+          wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo dpkg -i google-chrome-stable_current_amd64.deb || sudo apt-get -f install -y
+
+      - name: Tests unit/CSV
+        working-directory: tests
+        run: npm run test:unit
+
+      - name: Tests E2E (navegador real)
+        working-directory: tests
+        run: npm run test:e2e

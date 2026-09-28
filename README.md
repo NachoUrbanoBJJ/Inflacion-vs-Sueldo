@@ -4,7 +4,7 @@ Calculá tu **aumento real** — no el de papel. Elegís el mes de tu último au
 
 Proyecto 100% frontend, sin frameworks, con datos reales del INDEC vía la API de Datos Argentina.
 
-**Demo en vivo:** [ticket-inflacion.vercel.app](https://ticket-inflacion.vercel.app/)
+**Demo en vivo:** [ticket-inflacion.vercel.app](https://ticket-inflacion.vercel.app/) · [![Tests](https://github.com/NachoUrbanoBJJ/Inflacion-vs-Sueldo/actions/workflows/ci.yml/badge.svg)](https://github.com/NachoUrbanoBJJ/Inflacion-vs-Sueldo/actions/workflows/ci.yml)
 
 ## Screenshots
 
@@ -63,6 +63,7 @@ La primera vez, o si no hay conexión, usa una copia local incrustada de la seri
 | Persistencia | localStorage |
 | Test unit / CSV | tests/csv.test.js · Node.js (38 asserts) |
 | Test de navegador | tests/browser.test.js · Playwright + Edge/Chrome (64 asserts, desktop y mobile) |
+| CI | GitHub Actions: corre ambas suites en cada push |
 | Estética | Tipografías Space Mono + Archivo Black (Google Fonts) |
 
 ## Correrlo en local
